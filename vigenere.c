@@ -5,8 +5,7 @@
 
 int main(int argc,char *argv[])
 {
-    //char key[8] = "security";
-    int key[8] = {19,5,3,21,18,9,20,25};//security
+    char key[8] = "security";
     int key_len = 8;
     char plaintext[MAX_TEXT_LEN] = {0};
     char ciphertext[MAX_TEXT_LEN] = {0};
@@ -27,17 +26,9 @@ int main(int argc,char *argv[])
         }
         for(i=0;i<strlen(text);i++)
         {
-            if(j == key_len)
-            {
-                j = 0;
-            }
-            else
-            {
-                j += 1;
-            }
             m = (int)text[i] - bias;
 
-            ciphertext[i] = (m + key[i]) % 26 + bias;
+            ciphertext[i] = ((m + key[i % key_len] - 'a')) % 26 + bias;
         }
         printf("ciphertext is:%s\n",ciphertext);
     }
@@ -52,17 +43,9 @@ int main(int argc,char *argv[])
         }
         for(i=0;i<strlen(text);i++)
         {
-            if(j == key_len)
-            {
-                j = 0;
-            }
-            else
-            {
-                j += 1;
-            }
             m = (int)text[i] - bias;
 
-            plaintext[i] = (m - key[i] + 26) % 26 + bias;
+            plaintext[i] = (m - (key[i % key_len] - 'a') + 26) % 26 + bias;
         }
         printf("plaintext is:%s\n",plaintext);
     }
