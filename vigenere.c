@@ -34,11 +34,11 @@ int main(int argc,char *argv[])
     }
     else if(c == 'd' || c == 'D')
     {
-        printf("Please input the plaintext:\n");
+        printf("Please input the ciphertext:\n");
         scanf("%s",text);
         while(strlen(text) >= MAX_TEXT_LEN)
         {
-            printf("The size of text is larger than 100!Please input the plaintext again:\n");
+            printf("The size of text is larger than 100!Please input the ciphertext again:\n");
             scanf("%s",text);
         }
         for(i=0;i<strlen(text);i++)
