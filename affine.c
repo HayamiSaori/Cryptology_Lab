@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
-#define MAX_TEXT_LEN 100
+#define MAX_TEXT_LEN 512
 
 int gcd(int a,int b)
 {
@@ -21,7 +21,6 @@ int getInverse(int a)
     {
         if((i*a) % 26 == 1)
         {
-
             return i;
         }
     }
@@ -38,34 +37,52 @@ void genKey(int keys[])
 void encryption(char plaintext[],int keys[],char ciphertext[])
 {
     int i,m,bias = 97;
+    // printf("len:%d\n",strlen(plaintext));
     for(i=0;i<strlen(plaintext);i++)
     {
-        m = (int)plaintext[i] - bias;
+        if(isupper(plaintext[i]))
+        {
+            m = (int)tolower(plaintext[i]) - bias;
+        }
+        else if(islower(plaintext[i]))
+        {
+            m = (int)plaintext[i] - bias;
+        }
+        else
+        {
+            ciphertext[i] = plaintext[i];
+            continue;
+        }
         ciphertext[i] = (keys[0] * m + keys[1]) % 26 + bias;
     }
-    printf("The ciphertext is:%s\n",ciphertext);
+    printf("-------- ciphertext --------\n%s\n",ciphertext);
 }
 void decryption(char ciphertext[],int keys[],char plaintext[])
 {
     int i,c,bias = 97;
     int inverse_a = getInverse(keys[0]);
-    //int inverse_a;
-    //ExtendedEuclid(keys[0],26,&inverse_a);
-    printf("The inverse_a is:%d\n",inverse_a);
+    // int inverse_a;
+    // ExtendedEuclid(keys[0],26,&inverse_a);
+    // printf("The inverse_a is:%d\n",inverse_a);
     for(i=0;i<strlen(ciphertext);i++)
     {
-
-        c = (int)ciphertext[i] - bias;
-        plaintext[i] = (inverse_a * (c - keys[1] + 26)) % 26 + bias;
+        if(islower(ciphertext[i]))
+        {
+            c = (int)ciphertext[i] - bias;
+            plaintext[i] = (inverse_a * (c - keys[1] + 26)) % 26 + bias;
+        }
+        else
+        {
+            plaintext[i] = ciphertext[i];
+        }        
     }
-    printf("The plaintext is:%s\n",plaintext);
+    printf("-------- plaintext --------\n%s\n",plaintext);
 }
-int main(int argc,char *argv[])
+int main()
 {
     char c,text[MAX_TEXT_LEN],i;
     //int key_a,key_b;
     int keys[2];
-START:
     printf("What do you want to do?(e|E for encryption,d|D for decryption.)\n");
     c = getchar();getchar();
     if(c == 'e' || c == 'E')
@@ -73,17 +90,12 @@ START:
         genKey(keys);
         printf("key a:%d,key b:%d\n",keys[0],keys[1]);
         printf("Please input the plaintext:\n");
-        scanf("%s",text);
-        //printf("%s %d",text,strlen(text));
+        gets(text);
         while(strlen(text) >= MAX_TEXT_LEN)
         {
-            printf("The size of text is larger than 100!Please input the plaintext again:\n");
-            scanf("%s",text);
+            printf("The size of text is too long!Please input the plaintext again:\n");
+            gets(text);
         }
-        //for(i=0;i<strlen(text);i++)
-        //{
-            //if((!isupper(text[i])) && (!islower(text[i])))
-        //}
         char ciphertext[MAX_TEXT_LEN] = {0};
         encryption(text,keys,ciphertext);
     }
@@ -94,13 +106,13 @@ START:
         printf("Key b:");
         scanf("%d",&keys[1]);
         printf("%d %d\n",keys[0],keys[1]);
-        printf("Please input the ciphertext:\n");
-        scanf("%s",text);
+        printf("Please input the ciphertext:\n");getchar();
+        gets(text);
         //printf("%s %d\n",text,strlen(text));
         while(strlen(text) >= MAX_TEXT_LEN)
         {
-            printf("The size of text is larger than 100!Please input the ciphertext again:\n");
-            scanf("%s",text);
+            printf("The size of text is too long!Please input the ciphertext again:\n");getchar();
+            gets(text);
         }
         char plaintext[MAX_TEXT_LEN] = {0};
         decryption(text,keys,plaintext);

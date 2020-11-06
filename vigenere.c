@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
-#define MAX_TEXT_LEN 100
+#define MAX_TEXT_LEN 512
 
 int main(int argc,char *argv[])
 {
@@ -18,36 +18,54 @@ int main(int argc,char *argv[])
     if(c == 'e' || c == 'E')
     {
         printf("Please input the plaintext:\n");
-        scanf("%s",text);
+        gets(text);
         while(strlen(text) >= MAX_TEXT_LEN)
         {
-            printf("The size of text is larger than 100!Please input the plaintext again:\n");
-            scanf("%s",text);
+            printf("The size of text is too long!Please input the plaintext again:\n");
+            gets(text);
         }
         for(i=0;i<strlen(text);i++)
         {
-            m = (int)text[i] - bias;
-
+            if(isupper(text[i]))
+            {
+                m = (int)tolower(text[i]) - bias;
+            }
+            else if(islower(text[i]))
+            {
+                m = (int)text[i] - bias;
+            }
+            else
+            {
+                ciphertext[i] = text[i];
+                continue;
+            }
             ciphertext[i] = ((m + key[i % key_len] - 'a')) % 26 + bias;
         }
-        printf("ciphertext is:%s\n",ciphertext);
+        printf("-------- ciphertext --------\n%s\n",ciphertext);
+        // puts(ciphertext);
     }
     else if(c == 'd' || c == 'D')
     {
         printf("Please input the ciphertext:\n");
-        scanf("%s",text);
+        gets(text);
         while(strlen(text) >= MAX_TEXT_LEN)
         {
-            printf("The size of text is larger than 100!Please input the ciphertext again:\n");
-            scanf("%s",text);
+            printf("The size of text is too long!Please input the plaintext again:\n");getchar();
+            gets(text);
         }
         for(i=0;i<strlen(text);i++)
         {
-            m = (int)text[i] - bias;
-
-            plaintext[i] = (m - (key[i % key_len] - 'a') + 26) % 26 + bias;
+            if(islower(text[i]))
+            {
+                m = (int)text[i] - bias;
+                plaintext[i] = (m - (key[i % key_len] - 'a') + 26) % 26 + bias;
+            }
+            else
+            {
+                plaintext[i] = text[i];
+            }
         }
-        printf("plaintext is:%s\n",plaintext);
+        printf("-------- plaintext --------\n%s\n",plaintext);
     }
     else
     {
