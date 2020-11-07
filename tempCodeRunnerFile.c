@@ -1,4 +1,5 @@
-    for(j=0;j<32;j++)
-    {
-        R[j] = R_XOR_32[j];
-    }
+    // for(i=0;i<64;i++)
+    // {
+    //     printf("%d",TEXT[i]);
+    //     if((i+1)%4==0)printf(" ");
+    // }
