@@ -227,8 +227,6 @@ void ROUND_EN(int L[],int R[],int K[],int i)
     int R_XOR_32[32] = {0};
     // printf("now do the 32-bit xor\n");
     XOR_32(L,R_S_32,R_XOR_32);//32位异或
-    // printf("now copy the result to R\n");
-    // memcpy(R,R_XOR_32,sizeof(int)*32);  //仅右边32位发生了变化
     for(j=0;j<32;j++)
     {
         L[j] = R[j];
@@ -254,17 +252,6 @@ void ROUND_DE(int L[],int R[],int K[],int i)
 {
     // int i;
     int j,k;
-    // int C[28] = {0},D[28] = {0};
-    // printf("now divide the key\n");
-    // DIVK(C,D,K);        //将密钥分为2部分
-    // printf("now rotate the C and D\n");
-    // RL(C,D);            //C，D各自循环左移
-    // if(i!=1 && i!=2 && i!=9 && i!=16)
-    // {
-    //     RL(C,D);
-    // }
-    // printf("now re-link the key\n");
-    // LINK(C,D,K);        //生成下一轮的56位key
     int R_E[48] = {0};
     // printf("now extend the R\n");
     EXT(R_E,R);         //拓展右32位
