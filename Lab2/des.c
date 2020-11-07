@@ -236,6 +236,13 @@ void ROUND_EN(int L[],int R[],int K[],int i)
         R[j] = R_XOR_32[j];
     }
     // printf("now print the L and R\nL:");
+    printf("K:");
+    for(j=0;j<48;j++)
+    {
+        printf("%d",K_XOR[j]);
+        if((j+1)%4 == 0)printf(" ");
+    }
+    printf("\n");
     printf("L:");
     for(i=0;i<32;i++)
     {
@@ -278,6 +285,13 @@ void ROUND_DE(int L[],int R[],int K[],int i)
     {
         R[j] = R_XOR_32[j];
     }
+    printf("K:");
+    for(j=0;j<48;j++)
+    {
+        printf("%d",K[j]);
+        if((j+1)%4 == 0)printf(" ");
+    }
+    printf("\n");
     // printf("now print the L and R\nL:");
     printf("L:");
     for(j=0;j<32;j++)

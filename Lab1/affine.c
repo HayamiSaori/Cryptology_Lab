@@ -105,7 +105,7 @@ int main()
         scanf("%d",&keys[0]);
         printf("Key b:");
         scanf("%d",&keys[1]);
-        printf("%d %d\n",keys[0],keys[1]);
+        // printf("%d %d\n",keys[0],keys[1]);
         printf("Please input the ciphertext:\n");getchar();
         gets(text);
         //printf("%s %d\n",text,strlen(text));
