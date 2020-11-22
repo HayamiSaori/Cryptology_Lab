@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "unistd.h"
+// #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
 #include <windows.h>
@@ -99,9 +99,9 @@ int getNumFromSBox(int index)
 {
 //请补充代码
     int col,row;
-    col = getLeft4Bit(index);
-    row = getRight4Bit(index);
-    return S[col][row];
+    row = getLeft4Bit(index);
+    col = getRight4Bit(index);
+    return S[row][col];
 }
 
 /**
@@ -202,7 +202,13 @@ int T(int num, int round)
     int result;
     splitIntToArray(num, numArray);
 //请补充代码
-
+    leftLoop4int(numArray,1);
+    int s_array[4];
+    for(i=0;i<4;i++)
+    {
+        s_array[i] = getNumFromSBox(numArray[i]);
+    }
+    result = mergeArrayToInt(s_array) ^ Rcon[round-1];
     return result;
 }
 
@@ -229,6 +235,36 @@ void extendKey(char *key)
 {
     int i,j;
     //请补充代码完成后面的w[0]-w[43]
+    int Nk=4,Nb=4,Nr=10;
+    int temp[4],tempnum;
+    for(i=0;i<Nk;i++)
+    {
+        // for(j=0;j<3;j++)
+        // {
+        //     temp[i] = key[4*i+j];
+        // }
+        // w[i] = mergeArrayToInt(temp);
+        w[i] = getWordFromStr(key+i*Nb);
+    }
+    for(i=Nk;i<Nb*(Nr+1);i++)
+    {
+        // tempnum = w[i-1];
+        if(i%Nk == 0)
+        {
+            // splitIntToArray(tempnum,temp);
+            // leftLoop4int(temp,1);
+            // tempnum = mergeArrayToInt(temp);
+            // getArrayFrom4W()
+            // temp = getNumFromSBox(mergeArrayToInt(leftLoop4int(splitIntToArray(tempnum),1)))
+                    // ^ Rcon[i/Nk];
+            tempnum = T(w[i-1],i/Nk);
+        }
+        else
+        {
+            tempnum = w[i-1];
+        }
+        w[i] = w[i-Nk] ^ tempnum;
+    }
 }
 
 /**
@@ -238,6 +274,16 @@ void addRoundKey(int array[4][4], int round)
 {
 
   //请补充代码
+    int i,j;
+    int temp[4];
+    for(i=0;i<4;i++)
+    {
+        splitIntToArray(w[round*4+i],temp);
+        for(j=0;j<4;j++)
+        {
+            array[j][i] = array[j][i] ^ temp[j];    // 按列计算
+        }
+    }
 }
 
 /**
@@ -246,6 +292,14 @@ void addRoundKey(int array[4][4], int round)
 void subBytes(int array[4][4])
 {
 //请补充代码
+    int i,j;
+    for(i=0;i<4;i++)
+    {
+        for(j=0;j<4;j++)
+        {
+            array[i][j] = getNumFromSBox(array[i][j]);
+        }
+    }
 }
 
 /**
@@ -254,7 +308,20 @@ void subBytes(int array[4][4])
 void shiftRows(int array[4][4])
 {
 //请补充代码
-
+    int temp_line[4];
+    int i,j;
+    for(i=1;i<4;i++)
+    {
+        for(j=0;j<4;j++)
+        {
+            temp_line[j] = array[i][j];
+        }
+        leftLoop4int(temp_line,i);
+        for(j=0;j<4;j++)
+        {
+            array[i][j] = temp_line[j];
+        }
+    }
 }
 
 int GFMul2(int s)
@@ -342,6 +409,26 @@ void mixColumns(int array[4][4])
 {
 
 //请补充代码
+    int temp[4][4];
+    int i,j,k,t;
+    for(i=0;i<4;i++)
+    {
+        for(j=0;j<4;j++)
+        {
+            temp[i][j] = array[i][j];
+        }
+    }
+    for(i=0;i<4;i++)
+    {
+        for(j=0;j<4;j++)
+        {
+            array[i][j] = GFMul(colM[i][0],temp[0][j]);
+            for(k=1;k<4;k++)
+            {
+                array[i][j] = array[i][j] ^ GFMul(colM[i][k],temp[k][j]); 
+            }
+        }
+    }
 }
 /**
  * 把4X4数组转回字符串
@@ -425,6 +512,10 @@ void aes(char *p, int plen, char *key)
 int getNumFromS1Box(int index)
 {
 //请补充代码
+    int col,row;
+    row = getLeft4Bit(index);
+    col = getRight4Bit(index);
+    return S2[row][col]; 
 }
 /**
  * 逆字节变换
@@ -432,6 +523,14 @@ int getNumFromS1Box(int index)
 void deSubBytes(int array[4][4])
 {
 //请补充代码
+    int i,j;
+    for(i=0;i<4;i++)
+    {
+        for(j=0;j<4;j++)
+        {
+            array[i][j] = getNumFromS1Box(array[i][j]);
+        }
+    }
 }
 /**
  * 把4个元素的数组循环右移step位
@@ -439,6 +538,16 @@ void deSubBytes(int array[4][4])
 void rightLoop4int(int array[4], int step)
 {
 //请补充代码
+    int i,j,temp;
+    for(i=0;i<step%4;i++)
+    {
+        temp = array[3];
+        for(j=3;j>0;j--)
+        {
+            array[j] = array[j-1];
+        }
+        array[0] = temp;
+    }
 }
 
 /**
@@ -447,6 +556,20 @@ void rightLoop4int(int array[4], int step)
 void deShiftRows(int array[4][4])
 {
 //请补充代码
+    int temp_line[4];
+    int i,j;
+    for(i=1;i<4;i++)
+    {
+        for(j=0;j<4;j++)
+        {
+            temp_line[j] = array[i][j];
+        }
+        rightLoop4int(temp_line,i);
+        for(j=0;j<4;j++)
+        {
+            array[i][j] = temp_line[j];
+        }
+    }
 }
 /**
  * 逆列混合
@@ -454,6 +577,26 @@ void deShiftRows(int array[4][4])
 void deMixColumns(int array[4][4])
 {
 //请补充代码
+    int temp[4][4];
+    int i,j,k,t;
+    for(i=0;i<4;i++)
+    {
+        for(j=0;j<4;j++)
+        {
+            temp[i][j] = array[i][j];
+        }
+    }
+    for(i=0;i<4;i++)
+    {
+        for(j=0;j<4;j++)
+        {
+            array[i][j] = GFMul(deColM[i][0],temp[0][j]);
+            for(k=1;k<4;k++)
+            {
+                array[i][j] = array[i][j] ^ GFMul(deColM[i][k],temp[k][j]); 
+            }
+        }
+    }
 }
 /**
  * 把两个4X4数组进行异或
@@ -512,7 +655,38 @@ void deAes(char *c, int clen, char *key)
         exit(0);
     }
 
+
     //请补充代码
+    int i;
+    int ciphertext[4][4],temp_w[4][4];
+    extendKey(key); // 密钥拓展
+    for(k = 0; k < keylen; k += 16)
+    {
+        convertToIntArray(c + k, ciphertext);
+
+        addRoundKey(ciphertext, 10);//一开始的轮密钥加
+
+        for(i = 9; i > 0; i--)
+        {
+
+            deSubBytes(ciphertext);// 逆字节代换
+
+            deShiftRows(ciphertext);// 逆行移位
+            
+            deMixColumns(ciphertext);// 逆列混合
+            getArrayFrom4W(i,temp_w);
+            deMixColumns(temp_w);
+            addRoundTowArray(ciphertext, temp_w);
+        }
+
+        deSubBytes(ciphertext);// 逆字节代换
+
+        deShiftRows(ciphertext);// 逆行移位
+
+        addRoundKey(ciphertext, 0);
+
+        convertArrayToStr(ciphertext, c + k);
+    }
 }
 /**
 *读取字符串
