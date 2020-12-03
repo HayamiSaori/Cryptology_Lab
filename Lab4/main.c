@@ -65,7 +65,6 @@ int main()
     temp_plaintext[16] = 0;
     for(i=1;i<=block_num;i++)
     {
-
         //printASCCI(temp_plaintext,16);
         printf("group %d:",i);
         printASCCI(temp_plaintext,16);printf("||");
@@ -76,7 +75,13 @@ int main()
         {
             temp_plaintext[j] = p[j + bias] ^ temp_plaintext[j];
         }
+        for(j=0;j<16;j++)
+        {
+            ciphertext[j+(i-1)*16] = temp_plaintext[j];
+        }
         temp_plaintext[16] = 0;
     }
+    printf("\n--------------------------------\n");
+    printASCCI(ciphertext,plen);
 
 }
