@@ -5,7 +5,7 @@
 #include <windows.h>
 
 
-#define MAXLEN 8192
+#define MAXLEN 1024
 
 //密钥对应的扩展数组
 int w[44];
@@ -464,7 +464,7 @@ void aes(char *p, int plen, char *key)
     int pArray[4][4];
     int k,i;
 
-    /*if(plen == 0 || plen % 16 != 0)
+    if(plen == 0 || plen % 16 != 0)
     {
         printf("明文字符长度必须为16的倍数！\n");
         exit(0);
@@ -474,10 +474,10 @@ void aes(char *p, int plen, char *key)
     {
         printf("密钥字符长度错误！长度必须为16。当前长度为%d\n",keylen);
         exit(0);
-    }*/
+    }
 
     extendKey(key);//扩展密钥
-    //printW();
+    printW();
     for(k = 0; k < plen; k += 16)
     {
         convertToIntArray(p + k, pArray);
@@ -729,7 +729,9 @@ void readPlainText(char *str, int *len)
     {
         getString(str, MAXLEN);
         plen = strlen(str);
-        if(plen != 0 /*&& plen % 16 == 0*/)
+        printf("你输入的明文为：%s\n", str);
+        break;
+        /*if(plen != 0 && plen % 16 == 0)
         {
             printf("你输入的明文为：%s\n", str);
             break;
@@ -737,7 +739,7 @@ void readPlainText(char *str, int *len)
         else
         {
             printf("明文字符长度必须为16的倍数,现在的长度为%d\n", plen);
-        }
+        }*/
     }
     *len = plen;
 }
@@ -822,3 +824,53 @@ void deAesFile(char *key)
         printf("现在可以打开%s来查看解密后的密文了！\n",fileName);
     }
 }
+
+/*int main(int argc, char const *argv[])
+{
+
+    char key[17];
+    int klen;
+
+    int cos=0;
+    printf("************************$声明信息$****************************\n");
+    printf("版权声明：未经授权，禁止传播、使用和用于商业用途\n");
+    printf("使用说明：本程序是AES密码演示程序。\n");
+    printf("**********************$声明信息$******************************\n");
+    printf("================AES密码算法程序演示================\n\n");
+
+    while(1)
+    {
+        printf("请输入16个字符的密钥：\n");
+        getString(key,17);
+        klen = strlen(key);
+        if(klen != 16)
+        {
+            printf("请输入16个字符的密钥,当前密钥的长度为%d\n",klen);
+        }
+        else
+        {
+            printf("你输入的密钥为：%s\n",key);
+            break;
+
+        }
+
+    }
+
+
+
+    aesStrToFile(key);
+    printf("是否开始解密,1解密，2退出\n");
+    scanf("%d",&cos);
+    if (cos == 1 )
+    {
+        deAesFile(key);
+    }
+    else
+    {
+        return 0;
+    }
+    system("pause");
+
+    return 0;
+}*/
+

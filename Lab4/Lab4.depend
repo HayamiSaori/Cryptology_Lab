@@ -1,27 +1,13 @@
 # depslib dependency file v1.0
-1606180299 source:c:\users\lenovo\desktop\180110421\lab4\aes-demo.c
+1606987430 source:c:\users\lenovo\desktop\180110421\cryptology_lab\lab4\main.c
 	<stdio.h>
-	<string.h>
 	<stdlib.h>
-	<windows.h>
-
-1606183186 source:c:\users\lenovo\desktop\180110421\lab4\main.c
-	<stdio.h>
-	<string.h>
-	<stdlib.h>
-	<windows.h>
 	"demo.h"
 
-1606180299 c:\users\lenovo\desktop\180110421\lab4\aes-demo.c
-	<stdio.h>
-	<string.h>
-	<stdlib.h>
-	<windows.h>
-
-1606182411 c:\users\lenovo\desktop\180110421\lab4\demo.h
+1606984655 c:\users\lenovo\desktop\180110421\cryptology_lab\lab4\demo.h
 	"demo.c"
 
-1606183211 c:\users\lenovo\desktop\180110421\lab4\demo.c
+1606985437 c:\users\lenovo\desktop\180110421\cryptology_lab\lab4\demo.c
 	<stdio.h>
 	<string.h>
 	<stdlib.h>
