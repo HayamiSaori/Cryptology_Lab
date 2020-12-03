@@ -50,23 +50,33 @@ void getKey(char k[17])
 }
 int main()
 {
-    char p[PLAINTEXT_MAX_LEN] = {0},key[17] = {0},IV[17] = {0},temp_plaintext[17] = {0};
-    int plen,block_num,i,j,bias;
+    char p[PLAINTEXT_MAX_LEN] = {0},key[17] = {0},IV[17] = {0},temp_plaintext[17] = {0},ciphertext[PLAINTEXT_MAX_LEN] = {0};
+    int plen,block_num,i,j,bias=0;
     readPlainText(p,&plen);
     PadPlainText(p,&plen);
     //for(i=0;i<plen;i++)printf("%x,",p[i]);
     getKey(key);getKey(IV);
     block_num = plen / BLOCK_SIZE;
     printf("\ngroup num:%d\n",block_num);
-    for(i=0;i<block_num;i++)
+    for(j=0;j<16;j++)
     {
+        temp_plaintext[j] = p[j] ^ IV[j];
+    }
+    temp_plaintext[16] = 0;
+    for(i=1;i<=block_num;i++)
+    {
+
+        //printASCCI(temp_plaintext,16);
+        printf("group %d:",i);
+        printASCCI(temp_plaintext,16);printf("||");
+        aes(temp_plaintext,16,key);
         bias = i * BLOCK_SIZE;
+        printASCCI(temp_plaintext,16);printf("\n");
         for(j=0;j<16;j++)
         {
-            temp_plaintext[j] = p[bias+j];
+            temp_plaintext[j] = p[j + bias] ^ temp_plaintext[j];
         }
         temp_plaintext[16] = 0;
-        aes(temp_plaintext,16,key);
     }
 
 }

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1606987430 source:c:\users\lenovo\desktop\180110421\cryptology_lab\lab4\main.c
+1606992156 source:c:\users\lenovo\desktop\180110421\cryptology_lab\lab4\main.c
 	<stdio.h>
 	<stdlib.h>
 	"demo.h"
@@ -7,7 +7,7 @@
 1606984655 c:\users\lenovo\desktop\180110421\cryptology_lab\lab4\demo.h
 	"demo.c"
 
-1606985437 c:\users\lenovo\desktop\180110421\cryptology_lab\lab4\demo.c
+1606992227 c:\users\lenovo\desktop\180110421\cryptology_lab\lab4\demo.c
 	<stdio.h>
 	<string.h>
 	<stdlib.h>

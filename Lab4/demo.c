@@ -477,7 +477,7 @@ void aes(char *p, int plen, char *key)
     }
 
     extendKey(key);//¿©’π√‹‘ø
-    printW();
+    //printW();
     for(k = 0; k < plen; k += 16)
     {
         convertToIntArray(p + k, pArray);
@@ -716,7 +716,7 @@ void printASCCI(char *str, int len)
         c = c & 0x000000ff;
         printf("0x%x ", c);
     }
-    printf("\n");
+    //printf("\n");
 }
 
 /**
