@@ -714,9 +714,9 @@ void printASCCI(char *str, int len)
     {
         c = (int)*str++;
         c = c & 0x000000ff;
-        printf("0x%x ", c);
+        printf("0x%x\t ", c);
+        if((i+1)%8==0)printf("\n");
     }
-    printf("\n");
 }
 
 /**

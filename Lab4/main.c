@@ -73,11 +73,12 @@ int main()
     for(i=1;i<=block_num;i++)
     {
         //printASCCI(temp_text,16);
-        printf("group %d:\n",i);
-        printASCCI(temp_text,16);printf("\n");
+        printf("-------------------明文分组 %d-------------------\n",i);
+        printASCCI(temp_text,16);
         aes(temp_text,16,key);
         bias = i * BLOCK_SIZE;
-        printASCCI(temp_text,16);printf("\n");
+        printf("-------------------密文分组 %d-------------------\n",i);
+        printASCCI(temp_text,16);
         for(j=0;j<16;j++)
         {
             ciphertext[j + bias - 16] = temp_text[j];
@@ -103,7 +104,11 @@ int main()
         {
             temp_text[j] = ciphertext[j + bias];
         }
+        printf("-------------------明文分组 %d-------------------\n",block_num - i + 1);
+        printASCCI(temp_text,16);
         deAes(temp_text,16,key);
+        printf("-------------------密文分组 %d-------------------\n",block_num - i + 1);
+        printASCCI(temp_text,16);
         for(j=0;j<16;j++)
         {
             p[j + bias] = temp_text[j] ^ ciphertext[j + bias - 16];
@@ -115,12 +120,16 @@ int main()
     {
         temp_text[i] = ciphertext[i];
     }
+    printf("-------------------密文分组 1-------------------\n");
+    printASCCI(temp_text,16);
     deAes(temp_text,16,key);
+    printf("-------------------明文分组 1-------------------\n");
+    printASCCI(temp_text,16);
     for(j=0;j<16;j++)
     {
         p[j] = temp_text[j] ^ IV[j];
     }
     printASCCI(p,plen);
     p[plen] = '\0';
-    printf("还原回字符串为：\n%s\n",p);
+    printf("\n还原回字符串为：\n%s\n",p);
 }
