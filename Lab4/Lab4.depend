@@ -13,3 +13,17 @@
 	<stdlib.h>
 	<windows.h>
 
+1607133819 source:c:\testcode\c\cryptology_lab\lab4\main.c
+	<stdio.h>
+	<stdlib.h>
+	"demo.h"
+
+1607006667 c:\testcode\c\cryptology_lab\lab4\demo.h
+	"demo.c"
+
+1607006667 c:\testcode\c\cryptology_lab\lab4\demo.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<windows.h>
+
